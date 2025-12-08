@@ -1,10 +1,13 @@
 import React from 'react';
 import Container from '../../components/shared/Container/Container';
+import Banner from '../../components/Home/Banner';
+import HowItWorks from '../../components/Home/HowItWorks';
 
 const Home = () => {
     return (
         <Container>
-            <h1>hi</h1>
+            <Banner />
+            <HowItWorks />
         </Container>
     );
 };
