@@ -1,0 +1,14 @@
+.menu a.active {
+    border-bottom: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    background-color: transparent;
+    border-radius: 0;
+}
+
+.menu a {
+    font-weight: 500;
+}
+
+.menu a:hover {
+    color: var(--color-primary);
+}

@@ -1,10 +1,11 @@
 import React from 'react';
+import Container from '../../components/shared/Container/Container';
 
 const Home = () => {
     return (
-        <div>
-            home
-        </div>
+        <Container>
+            <h1>hi</h1>
+        </Container>
     );
 };
 
