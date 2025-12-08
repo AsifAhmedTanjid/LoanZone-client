@@ -6,6 +6,7 @@ import NotFound from "../pages/NotFound/NotFound";
 import Contact from "../pages/Contact/Contact";
 import AllLoans from "../pages/AllLoans/AllLoans";
 import Register from "../pages/Auth/Register/Register";
+import Login from "../pages/Auth/Login/Login";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
             {
                 path: "register",
                 Component: Register
+            },
+            {
+                path: "login",
+                Component: Login
             }
         ]
     }

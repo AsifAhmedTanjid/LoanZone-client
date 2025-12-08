@@ -154,7 +154,7 @@ const Register = () => {
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
-                    className={`input input-bordered w-full ${errors.password ? 'input-error' : ''}`}
+                    className={`input input-bordered w-full pr-10 ${errors.password ? 'input-error' : ''}`}
                     placeholder="Password"
                     {...register("password", { 
                       required: "Password is required",
@@ -169,7 +169,8 @@ const Register = () => {
                     })}
                   />
                   <button
-                    className="absolute top-3 right-4 text-base-content/50 hover:text-primary"
+                    type="button"
+                    className="absolute top-3 right-4 z-10 text-base-content/50 hover:text-primary"
                     onClick={handleTogglePassword}
                   >
                     {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
@@ -185,7 +186,7 @@ const Register = () => {
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
-                    className={`input input-bordered w-full ${errors.confirmPassword ? 'input-error' : ''}`}
+                    className={`input input-bordered w-full pr-10 ${errors.confirmPassword ? 'input-error' : ''}`}
                     placeholder="Confirm Password"
                     {...register("confirmPassword", { 
                       required: "Please confirm your password",
@@ -197,7 +198,8 @@ const Register = () => {
                     })}
                   />
                   <button
-                    className="absolute top-3 right-4 text-base-content/50 hover:text-primary"
+                    type="button"
+                    className="absolute top-3 right-4 z-10 text-base-content/50 hover:text-primary"
                     onClick={handleTogglePassword}
                   >
                     {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
@@ -207,7 +209,7 @@ const Register = () => {
               </div>
               
               <div className="form-control mt-6">
-                <button className="btn btn-primary">Register</button>
+                <button className="btn btn-primary w-full">Register</button>
               </div>
             </form>
 
