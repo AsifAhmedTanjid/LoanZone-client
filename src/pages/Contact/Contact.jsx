@@ -7,7 +7,7 @@ const Contact = () => {
         <Container>
             <div className="py-12">
                 <div className="text-center mb-16">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-6 text-primary">Get in Touch</h1>
+                    <h1 className="text-4xl font-bold mb-6 text-primary">Get in Touch</h1>
                     <p className="text-lg text-base-content/70 max-w-2xl mx-auto">
                         Have questions about our loans or services? We're here to help. Reach out to us through any of the channels below.
                     </p>
