@@ -2,6 +2,7 @@ import React from 'react';
 import Container from '../../components/shared/Container/Container';
 import Banner from '../../components/Home/Banner';
 import HowItWorks from '../../components/Home/HowItWorks';
+import WhyChooseUs from '../../components/Home/WhyChooseUs';
 import Testimonials from '../../components/Home/Testimonials';
 
 const Home = () => {
@@ -9,6 +10,7 @@ const Home = () => {
         <Container>
             <Banner />
             <HowItWorks />
+            <WhyChooseUs />
             <Testimonials />
         </Container>
     );

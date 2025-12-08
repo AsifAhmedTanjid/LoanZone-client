@@ -32,7 +32,7 @@ const Testimonials = () => {
             name: "Azizul Islam Milton",
             role: "Tech Entrepreneur",
             image: "https://i.ibb.co.com/LdH46WKY/Screenshot-2025-10-25-124736.png",
-            rating: 1,
+            rating: 5,
             text: "Excellent service! The platform is user-friendly, and the customer support is top-notch. They really care about finding the right financial solution for you."
         }
     ];
@@ -61,7 +61,7 @@ const Testimonials = () => {
                 </p>
             </div>
 
-            <div className="relative max-w-4xl mx-auto px-4">
+            <div className="relative mx-auto px-4">
 
                 <div className="card bg-base-100 shadow-xl border border-base-200">
                     <div className="card-body items-center text-center py-12">

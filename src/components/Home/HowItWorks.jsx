@@ -30,7 +30,7 @@ const HowItWorks = () => {
     ];
 
     return (
-        <div className="py-16 bg-base-200 rounded-xl my-12">
+        <div className="py-16  rounded-xl my-12">
             <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold mb-4">How It Works</h2>
                 <p className="text-base-content/70 max-w-2xl mx-auto">
@@ -38,9 +38,9 @@ const HowItWorks = () => {
                 </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 ">
                 {steps.map((step) => (
-                    <div key={step.id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                    <div key={step.id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-base-200">
                         <div className="card-body items-center text-center">
                             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                                 {step.icon}
