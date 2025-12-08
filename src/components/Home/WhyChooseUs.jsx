@@ -39,7 +39,7 @@ const WhyChooseUs = () => {
     return (
         
        
-            <div className="py-16  rounded-3xl my-12">
+            <div className="py-12 rounded-3xl my-12">
                 <div>
             <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold mb-4">Why Choose LoanZone?</h2>

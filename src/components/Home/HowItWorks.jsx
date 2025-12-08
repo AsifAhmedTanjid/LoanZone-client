@@ -30,7 +30,7 @@ const HowItWorks = () => {
     ];
 
     return (
-        <div className="py-16  rounded-xl my-12">
+        <div className="py-12 rounded-xl my-12">
             <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold mb-4">How It Works</h2>
                 <p className="text-base-content/70 max-w-2xl mx-auto">

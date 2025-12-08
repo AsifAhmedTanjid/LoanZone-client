@@ -53,7 +53,7 @@ const Testimonials = () => {
     }, [nextSlide]);
 
     return (
-        <div className="py-16 my-12">
+        <div className="py-12 my-12">
             <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold mb-4">What Our Customers Say</h2>
                 <p className="text-base-content/70 max-w-2xl mx-auto">
