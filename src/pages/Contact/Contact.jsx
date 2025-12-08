@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '../../components/shared/Container/Container';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaHeadset } from 'react-icons/fa';
 
 const Contact = () => {
     return (
@@ -61,6 +61,17 @@ const Contact = () => {
                                             <p className="text-base-content/70">Friday - Saturday: Closed</p>
                                         </div>
                                     </div>
+
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                                            <FaHeadset className="text-primary text-xl" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold text-lg">Customer Support</h3>
+                                            <p className="text-base-content/70">24/7 Live Chat Available</p>
+                                            <p className="text-base-content/70">Average response time: 5 mins</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -95,8 +106,8 @@ const Contact = () => {
                                     <label className="label">
                                         <span className="label-text">Subject</span>
                                     </label>
-                                    <select className="select select-bordered w-full">
-                                        <option disabled selected>Select a topic</option>
+                                    <select className="select select-bordered w-full" defaultValue="Select a topic">
+                                        <option disabled>Select a topic</option>
                                         <option>Loan Application</option>
                                         <option>Repayment Inquiry</option>
                                         <option>Technical Support</option>

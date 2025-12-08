@@ -1,0 +1,134 @@
+[
+    {
+        "_id": "1",
+        "title": "Personal Loan",
+        "image": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "category": "Personal",
+        "interestRate": "10%",
+        "maxLoanLimit": 50000,
+        "description": "Get a personal loan for your immediate needs with flexible repayment options.",
+        "emiOptions": [
+            "6 Months",
+            "12 Months",
+            "24 Months"
+        ]
+    },
+    {
+        "_id": "2",
+        "title": "Business Startup Loan",
+        "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "category": "Business",
+        "interestRate": "8.5%",
+        "maxLoanLimit": 200000,
+        "description": "Fuel your business growth with our competitive startup loans.",
+        "emiOptions": [
+            "12 Months",
+            "24 Months",
+            "36 Months",
+            "48 Months"
+        ]
+    },
+    {
+        "_id": "3",
+        "title": "Home Renovation Loan",
+        "image": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "category": "Home",
+        "interestRate": "7.2%",
+        "maxLoanLimit": 150000,
+        "description": "Upgrade your living space with our hassle-free home renovation loans.",
+        "emiOptions": [
+            "12 Months",
+            "24 Months",
+            "36 Months",
+            "60 Months"
+        ]
+    },
+    {
+        "_id": "4",
+        "title": "Vehicle Loan",
+        "image": "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "category": "Vehicle",
+        "interestRate": "9%",
+        "maxLoanLimit": 80000,
+        "description": "Drive your dream car today with our quick vehicle loans.",
+        "emiOptions": [
+            "12 Months",
+            "24 Months",
+            "36 Months",
+            "48 Months"
+        ]
+    },
+    {
+        "_id": "5",
+        "title": "Education Loan",
+        "image": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "category": "Education",
+        "interestRate": "5.5%",
+        "maxLoanLimit": 100000,
+        "description": "Invest in your future with our low-interest education loans.",
+        "emiOptions": [
+            "24 Months",
+            "36 Months",
+            "48 Months",
+            "60 Months"
+        ]
+    },
+    {
+        "_id": "6",
+        "title": "Wedding Loan",
+        "image": "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "category": "Personal",
+        "interestRate": "11%",
+        "maxLoanLimit": 40000,
+        "description": "Make your special day unforgettable with our wedding loans.",
+        "emiOptions": [
+            "12 Months",
+            "24 Months",
+            "36 Months"
+        ]
+    },
+    {
+        "_id": "7",
+        "title": "Medical Emergency Loan",
+        "image": "https://images.unsplash.com/photo-1538108149393-fbbd81895907?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "category": "Health",
+        "interestRate": "6%",
+        "maxLoanLimit": 30000,
+        "description": "Get immediate financial support for medical emergencies.",
+        "emiOptions": [
+            "6 Months",
+            "12 Months",
+            "18 Months"
+        ]
+    },
+    {
+        "_id": "8",
+        "title": "Travel Loan",
+        "image": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "category": "Lifestyle",
+        "interestRate": "10.5%",
+        "maxLoanLimit": 25000,
+        "description": "Explore the world with our easy-to-get travel loans.",
+        "emiOptions": [
+            "6 Months",
+            "12 Months",
+            "18 Months",
+            "24 Months"
+        ]
+    },
+    {
+        "_id": "9",
+        "title": "Gadget Loan",
+        "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "category": "Lifestyle",
+        "interestRate": "12%",
+        "maxLoanLimit": 5000,
+        "description": "Buy the latest gadgets now and pay later with our gadget loans.",
+        "emiOptions": [
+            "3 Months",
+            "6 Months",
+            "9 Months",
+            "12 Months"
+        ]
+    }
+]

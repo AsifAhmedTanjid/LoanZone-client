@@ -4,6 +4,7 @@ import Home from "../pages/Home/Home";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import NotFound from "../pages/NotFound/NotFound";
 import Contact from "../pages/Contact/Contact";
+import AllLoans from "../pages/AllLoans/AllLoans";
 
 const router = createBrowserRouter([
     {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
             {
                 index:true,
                 Component:Home
+            },
+            {
+                path: "all-loans",
+                Component: AllLoans
             },
             {
                 path: "about",
