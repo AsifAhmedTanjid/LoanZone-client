@@ -99,10 +99,11 @@ const Navbar = () => {
                         <HashLoader color="#36d7b7" size={20} />
                       ) : (
                         <img
+                         referrerPolicy="no-referrer"
                           alt="User Avatar"
                           src={
                             user?.photoURL ||
-                            "https://referrer.com/wp-content/uploads/2019/03/user-icon-300x300.png"
+                            "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
                           }
                         />
                       )}

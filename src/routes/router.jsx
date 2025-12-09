@@ -7,6 +7,8 @@ import Contact from "../pages/Contact/Contact";
 import AllLoans from "../pages/AllLoans/AllLoans";
 import Register from "../pages/Auth/Register/Register";
 import Login from "../pages/Auth/Login/Login";
+import LoanDetails from "../pages/LoanDetails/LoanDetails";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
     {
@@ -37,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path: "login",
                 Component: Login
+            },
+            {
+                path: "loan-details/:id",
+                element: <PrivateRoute><LoanDetails /></PrivateRoute>
             }
         ]
     }
