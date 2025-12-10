@@ -235,7 +235,7 @@ const LoanDetails = () => {
                         <div className="card-actions mt-8 mb-8">
                             <button 
                                 onClick={handleApply} 
-                                className="btn btn-primary btn-lg w-full shadow-lg hover:shadow-primary/50 transition-all transform hover:-translate-y-1 text-white"
+                                className="btn btn-primary btn-lg w-full shadow-lg hover:shadow-primary/50 transition-all transform hover:-translate-y-1 "
                                 disabled={!user}
                             >
                                 Apply for this Loan

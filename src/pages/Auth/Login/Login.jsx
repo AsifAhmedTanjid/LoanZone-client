@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Login = () => {
   const { signInWithEmailAndPasswordFunc, signInWithGoogleFunc, setLoading, setUser } = useAuth();
@@ -17,6 +18,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const axiosSecure = useAxiosSecure();
 
   const onSubmit = (data) => {
     const { email, password } = data;
@@ -41,6 +43,19 @@ const Login = () => {
       .then((res) => {
         setUser(res.user);
         setLoading(false);
+
+        const userInfo = {
+          email: res.user.email,
+          name: res.user.displayName,
+          photo: res.user.photoURL,
+        };
+
+        axiosSecure.post("/users", userInfo).then((res) => {
+          if (res.data.insertedId) {
+            console.log("user created in the database");
+          }
+        });
+
         toast.success("Login successful!");
         setTimeout(() => {
           navigate(from, { replace: true });

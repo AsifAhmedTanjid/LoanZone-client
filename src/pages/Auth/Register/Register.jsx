@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Register = () => {
   const {
@@ -15,8 +16,14 @@ const Register = () => {
   } = useAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  
-  const { register, handleSubmit, formState: { errors }, watch } = useForm();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
+  const axiosSecure = useAxiosSecure();
 
   const onSubmit = (data) => {
     const { email, password, name, photo, role } = data;
@@ -31,9 +38,20 @@ const Register = () => {
               displayName: name,
               photoURL: photo,
             });
-            // Here you would typically save the user role to your database
-            console.log("User Role:", role); 
-            
+            // create user in the database
+            const userInfo = {
+              email: result.user.email,
+              name: result.user.displayName,
+              photo: result.user.photoURL,
+              role: role,
+            };
+            axiosSecure.post("/users", userInfo).then((res) => {
+              if (res.data.insertedId) {
+                console.log("user created in the database");
+              }
+            });
+            console.log("User Role:", role);
+
             setLoading(false);
             toast.success("Registered successfully!");
 
@@ -62,6 +80,20 @@ const Register = () => {
       .then((res) => {
         setLoading(false);
         setUser(res.user);
+
+        const userInfo = {
+          email: res.user.email,
+          name: res.user.displayName,
+          photo: res.user.photoURL,
+          role: "borrower",
+        };
+
+        axiosSecure.post("/users", userInfo).then((res) => {
+          if (res.data.insertedId) {
+            console.log("user created in the database");
+          }
+        });
+
         toast.success("Login successful!", {
           duration: 1500,
         });
@@ -81,12 +113,16 @@ const Register = () => {
         <div className="text-center lg:text-left max-w-md">
           <h1 className="text-5xl font-bold text-primary">Join LoanZone!</h1>
           <p className="py-6 text-base-content/70">
-            Start your journey towards financial freedom today. Create an account to apply for loans, track your applications, and manage your repayments with ease.
+            Start your journey towards financial freedom today. Create an
+            account to apply for loans, track your applications, and manage your
+            repayments with ease.
           </p>
         </div>
         <div className="card bg-base-100 w-full max-w-md shrink-0 shadow-2xl">
           <div className="card-body">
-            <h2 className="text-2xl font-bold text-center mb-4">Create an Account</h2>
+            <h2 className="text-2xl font-bold text-center mb-4">
+              Create an Account
+            </h2>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control">
                 <label className="label">
@@ -94,24 +130,36 @@ const Register = () => {
                 </label>
                 <input
                   type="text"
-                  className={`input input-bordered w-full ${errors.name ? 'input-error' : ''}`}
+                  className={`input input-bordered w-full ${
+                    errors.name ? "input-error" : ""
+                  }`}
                   placeholder="Your Name"
                   {...register("name", { required: "Name is required" })}
                 />
-                {errors.name && <span className="text-error text-sm mt-1">{errors.name.message}</span>}
+                {errors.name && (
+                  <span className="text-error text-sm mt-1">
+                    {errors.name.message}
+                  </span>
+                )}
               </div>
-              
+
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Photo URL</span>
                 </label>
                 <input
                   type="text"
-                  className={`input input-bordered w-full ${errors.photo ? 'input-error' : ''}`}
+                  className={`input input-bordered w-full ${
+                    errors.photo ? "input-error" : ""
+                  }`}
                   placeholder="https://example.com/photo.jpg"
                   {...register("photo", { required: "Photo URL is required" })}
                 />
-                {errors.photo && <span className="text-error text-sm mt-1">{errors.photo.message}</span>}
+                {errors.photo && (
+                  <span className="text-error text-sm mt-1">
+                    {errors.photo.message}
+                  </span>
+                )}
               </div>
 
               <div className="form-control">
@@ -120,30 +168,36 @@ const Register = () => {
                 </label>
                 <input
                   type="email"
-                  className={`input input-bordered w-full ${errors.email ? 'input-error' : ''}`}
+                  className={`input input-bordered w-full ${
+                    errors.email ? "input-error" : ""
+                  }`}
                   placeholder="email@example.com"
-                  {...register("email", { 
+                  {...register("email", {
                     required: "Email is required",
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "Invalid email address"
-                    }
+                      message: "Invalid email address",
+                    },
                   })}
                 />
-                {errors.email && <span className="text-error text-sm mt-1">{errors.email.message}</span>}
+                {errors.email && (
+                  <span className="text-error text-sm mt-1">
+                    {errors.email.message}
+                  </span>
+                )}
               </div>
 
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Role</span>
                 </label>
-                <select 
-                  className="select select-bordered w-full" 
+                <select
+                  className="select select-bordered w-full"
                   defaultValue="borrower"
                   {...register("role")}
                 >
-                    <option value="borrower">Borrower</option>
-                    <option value="manager">Manager</option>
+                  <option value="borrower">Borrower</option>
+                  <option value="manager">Manager</option>
                 </select>
               </div>
 
@@ -154,18 +208,21 @@ const Register = () => {
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
-                    className={`input input-bordered w-full pr-10 ${errors.password ? 'input-error' : ''}`}
+                    className={`input input-bordered w-full pr-10 ${
+                      errors.password ? "input-error" : ""
+                    }`}
                     placeholder="Password"
-                    {...register("password", { 
+                    {...register("password", {
                       required: "Password is required",
                       minLength: {
                         value: 6,
-                        message: "Password must be at least 6 characters long"
+                        message: "Password must be at least 6 characters long",
                       },
                       pattern: {
                         value: /^(?=.*[a-z])(?=.*[A-Z]).*$/,
-                        message: "Password must contain at least one uppercase and one lowercase letter"
-                      }
+                        message:
+                          "Password must contain at least one uppercase and one lowercase letter",
+                      },
                     })}
                   />
                   <button
@@ -173,10 +230,18 @@ const Register = () => {
                     className="absolute top-3 right-4 z-10 text-base-content/50 hover:text-primary"
                     onClick={handleTogglePassword}
                   >
-                    {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                    {showPassword ? (
+                      <FaEyeSlash size={20} />
+                    ) : (
+                      <FaEye size={20} />
+                    )}
                   </button>
                 </div>
-                {errors.password && <span className="text-error text-sm mt-1">{errors.password.message}</span>}
+                {errors.password && (
+                  <span className="text-error text-sm mt-1">
+                    {errors.password.message}
+                  </span>
+                )}
               </div>
 
               <div className="form-control">
@@ -186,15 +251,17 @@ const Register = () => {
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
-                    className={`input input-bordered w-full pr-10 ${errors.confirmPassword ? 'input-error' : ''}`}
+                    className={`input input-bordered w-full pr-10 ${
+                      errors.confirmPassword ? "input-error" : ""
+                    }`}
                     placeholder="Confirm Password"
-                    {...register("confirmPassword", { 
+                    {...register("confirmPassword", {
                       required: "Please confirm your password",
                       validate: (val) => {
-                        if (watch('password') != val) {
+                        if (watch("password") != val) {
                           return "Your passwords do NOT match";
                         }
-                      }
+                      },
                     })}
                   />
                   <button
@@ -202,12 +269,20 @@ const Register = () => {
                     className="absolute top-3 right-4 z-10 text-base-content/50 hover:text-primary"
                     onClick={handleTogglePassword}
                   >
-                    {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                    {showPassword ? (
+                      <FaEyeSlash size={20} />
+                    ) : (
+                      <FaEye size={20} />
+                    )}
                   </button>
                 </div>
-                {errors.confirmPassword && <span className="text-error text-sm mt-1">{errors.confirmPassword.message}</span>}
+                {errors.confirmPassword && (
+                  <span className="text-error text-sm mt-1">
+                    {errors.confirmPassword.message}
+                  </span>
+                )}
               </div>
-              
+
               <div className="form-control mt-6">
                 <button className="btn btn-primary w-full">Register</button>
               </div>
