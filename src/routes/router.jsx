@@ -9,6 +9,7 @@ import Register from "../pages/Auth/Register/Register";
 import Login from "../pages/Auth/Login/Login";
 import LoanDetails from "../pages/LoanDetails/LoanDetails";
 import PrivateRoute from "./PrivateRoute";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 const router = createBrowserRouter([
     {
@@ -44,6 +45,17 @@ const router = createBrowserRouter([
                 path: "loan-details/:id",
                 element: <PrivateRoute><LoanDetails /></PrivateRoute>
             }
+        ]
+    },
+    {
+        path: "/dashboard",
+        element:(
+            <PrivateRoute>
+                <DashboardLayout></DashboardLayout>
+            </PrivateRoute>
+        ),
+        children:[
+            
         ]
     }
 ])
