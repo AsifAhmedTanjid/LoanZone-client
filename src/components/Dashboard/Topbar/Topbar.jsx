@@ -31,7 +31,7 @@ export default function Topbar({ handleToggle }) {
   };
 
   return (
-    <div className="flex items-center justify-between px-6 py-[11px] bg-base-100 shadow-sm border-b border-base-200">
+    <div className="flex items-center justify-between px-6 py-[11px] bg-base-100 shadow-sm border-b border-base-200 sticky top-0 z-50">
       <div className="flex items-center gap-4">
         <button
           onClick={handleToggle}

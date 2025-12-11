@@ -13,6 +13,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Profile from "../pages/Dashboard/Shared/Profile";
 import AddLoan from "../pages/Dashboard/Manager/AddLoan";
 import ManagerRoute from "./ManagerRoute";
+import ManageLoan from "../pages/Dashboard/Manager/ManageLoan";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,16 @@ const router = createBrowserRouter([
           <PrivateRoute>
             <ManagerRoute>
               <AddLoan />
+            </ManagerRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "manage-loans",
+        element: (
+          <PrivateRoute>
+            <ManagerRoute>
+              <ManageLoan />
             </ManagerRoute>
           </PrivateRoute>
         ),
