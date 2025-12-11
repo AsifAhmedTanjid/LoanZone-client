@@ -35,7 +35,7 @@ export default function Topbar({ handleToggle }) {
       <div className="flex items-center gap-4">
         <button
           onClick={handleToggle}
-          className="mobile-menu-button p-2 focus:outline-none focus:bg-gray-200 md:hidden text-base-content"
+          className="mobile-menu-button p-2 focus:outline-none focus:bg-gray-200 lg:hidden text-base-content"
         >
           <AiOutlineBars className="h-5 w-5" />
         </button>

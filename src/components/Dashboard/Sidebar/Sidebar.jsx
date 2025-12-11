@@ -21,9 +21,9 @@ const Sidebar = ({ isActive }) => {
   if (isRoleLoading) {
     return (
       <div
-        className={`z-10 md:static md:min-h-screen flex justify-center items-center bg-base-100 w-68 absolute inset-y-0 left-0 transform ${
+        className={`z-10 lg:static lg:min-h-screen flex justify-center items-center bg-base-100 w-68 absolute inset-y-0 left-0 transform ${
           isActive ? "translate-x-0" : "-translate-x-full"
-        }  md:translate-x-0  transition duration-200 ease-in-out border-r border-base-200`}
+        }  lg:translate-x-0  transition duration-200 ease-in-out border-r border-base-200`}
       >
         <HashLoader color="#36d7b7" size={50} />
       </div>
@@ -34,15 +34,15 @@ const Sidebar = ({ isActive }) => {
     <>
       {/* Sidebar */}
       <div
-        className={`z-10 md:static md:min-h-screen flex flex-col justify-between overflow-x-hidden bg-base-100 w-68 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform ${
+        className={`z-10 lg:static lg:min-h-screen flex flex-col justify-between overflow-x-hidden bg-base-100 w-68 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform ${
           isActive ? "translate-x-0" : "-translate-x-full"
-        }  md:translate-x-0  transition duration-200 ease-in-out border-r border-base-200`}
+        }  lg:translate-x-0  transition duration-200 ease-in-out border-r border-base-200`}
       >
         <div className="flex flex-col h-full">
          
           <div>
             {/* Logo */}
-            <div className="w-full hidden md:flex px-4 py-2  rounded-lg justify-center items-center  mx-auto">
+            <div className="w-full flex px-4 py-2  rounded-lg justify-center items-center  mx-auto">
                <h1 className="text-xl font-semibold text-base-content">{title}</h1>
             </div>
           </div>

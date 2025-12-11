@@ -10,53 +10,65 @@ import Login from "../pages/Auth/Login/Login";
 import LoanDetails from "../pages/LoanDetails/LoanDetails";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
+import Profile from "../pages/Dashboard/Shared/Profile";
 
 const router = createBrowserRouter([
-    {
-        path:"/",
-        element:<MainLayout></MainLayout>,
-        errorElement: <NotFound />,
-        children:[
-            {
-                index:true,
-                Component:Home
-            },
-            {
-                path: "all-loans",
-                Component: AllLoans
-            },
-            {
-                path: "about",
-                Component: AboutUs
-            },
-            {
-                path: "contact",
-                Component: Contact
-            },
-            {
-                path: "register",
-                Component: Register
-            },
-            {
-                path: "login",
-                Component: Login
-            },
-            {
-                path: "loan-details/:id",
-                element: <PrivateRoute><LoanDetails /></PrivateRoute>
-            }
-        ]
-    },
-    {
-        path: "/dashboard",
-        element:(
-            <PrivateRoute>
-                <DashboardLayout></DashboardLayout>
-            </PrivateRoute>
+  {
+    path: "/",
+    element: <MainLayout></MainLayout>,
+    errorElement: <NotFound />,
+    children: [
+      {
+        index: true,
+        Component: Home,
+      },
+      {
+        path: "all-loans",
+        Component: AllLoans,
+      },
+      {
+        path: "about",
+        Component: AboutUs,
+      },
+      {
+        path: "contact",
+        Component: Contact,
+      },
+      {
+        path: "register",
+        Component: Register,
+      },
+      {
+        path: "login",
+        Component: Login,
+      },
+      {
+        path: "loan-details/:id",
+        element: (
+          <PrivateRoute>
+            <LoanDetails />
+          </PrivateRoute>
         ),
-        children:[
-            
-        ]
-    }
-])
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: "profile",
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
+      },
+    ],
+  },
+]);
 export default router;
