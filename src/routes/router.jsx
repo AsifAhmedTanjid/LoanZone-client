@@ -11,6 +11,7 @@ import LoanDetails from "../pages/LoanDetails/LoanDetails";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Profile from "../pages/Dashboard/Shared/Profile";
+import AddLoan from "../pages/Dashboard/Manager/AddLoan";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,14 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
+      {
+        path: "add-loan",
+        element: (
+          <PrivateRoute>
+            <AddLoan />
+          </PrivateRoute>
+        ),
+      },
       {
         path: "profile",
         element: (
