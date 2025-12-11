@@ -12,6 +12,7 @@ import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Profile from "../pages/Dashboard/Shared/Profile";
 import AddLoan from "../pages/Dashboard/Manager/AddLoan";
+import ManagerRoute from "./ManagerRoute";
 
 const router = createBrowserRouter([
   {
@@ -65,7 +66,9 @@ const router = createBrowserRouter([
         path: "add-loan",
         element: (
           <PrivateRoute>
-            <AddLoan />
+            <ManagerRoute>
+              <AddLoan />
+            </ManagerRoute>
           </PrivateRoute>
         ),
       },
