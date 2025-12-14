@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import Container from '../../components/shared/Container/Container';
 import LoanCard from '../../components/shared/LoanCard/LoanCard';
 import { useQuery } from '@tanstack/react-query';
@@ -6,13 +7,44 @@ import useAxios from '../../hooks/useAxios';
 
 const AllLoans = () => {
     const axiosPublic = useAxios();
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 9;
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [currentPage]);
+
     const { data: loans = [], isLoading } = useQuery({
-        queryKey: ['loans'],
+        queryKey: ['loans', currentPage, itemsPerPage],
         queryFn: async () => {
-            const { data } = await axiosPublic.get('/loans');
+            const { data } = await axiosPublic.get(`/loans?page=${currentPage}&size=${itemsPerPage}`);
             return data;
         }
     });
+
+    const { data: countData } = useQuery({
+        queryKey: ['loansCount'],
+        queryFn: async () => {
+            const { data } = await axiosPublic.get('/loansCount');
+            return data;
+        }
+    });
+
+    const count = countData?.count || 0;
+    const numberOfPages = Math.ceil(count / itemsPerPage);
+    const pages = [...Array(numberOfPages).keys()];
+
+    const handlePrevPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+    }
+
+    const handleNextPage = () => {
+        if (currentPage < numberOfPages - 1) {
+            setCurrentPage(currentPage + 1);
+        }
+    }
 
     if (isLoading) {
         return (
@@ -36,6 +68,21 @@ const AllLoans = () => {
                     {loans.map(loan => (
                         <LoanCard key={loan._id} loan={loan} />
                     ))}
+                </div>
+
+                {/* Pagination Controls */}
+                <div className='text-center mt-12'>
+                    <div className="join">
+                        <button onClick={handlePrevPage} className="join-item btn btn-outline">Prev</button>
+                        {
+                            pages.map(page => <button
+                                key={page}
+                                onClick={() => setCurrentPage(page)}
+                                className={`join-item btn ${currentPage === page ? 'btn-active btn-primary' : 'btn-outline'}`}
+                            >{page + 1}</button>)
+                        }
+                        <button onClick={handleNextPage} className="join-item btn btn-outline">Next</button>
+                    </div>
                 </div>
             </div>
         </Container>
