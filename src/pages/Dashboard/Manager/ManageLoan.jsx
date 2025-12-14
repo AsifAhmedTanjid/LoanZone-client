@@ -13,7 +13,9 @@ const ManageLoan = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const [selectedLoan, setSelectedLoan] = useState(null);
-  const { register, handleSubmit,setValue, formState: { errors } } = useForm();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterCategory, setFilterCategory] = useState("");
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
 
   const {
     data: loans = [],
@@ -106,6 +108,16 @@ const ManageLoan = () => {
     updateLoan({ ...data, _id: selectedLoan._id });
   };
 
+  const filteredLoans = loans.filter((loan) => {
+    const matchesSearch = loan.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesCategory = filterCategory
+      ? loan.category === filterCategory
+      : true;
+    return matchesSearch && matchesCategory;
+  });
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -136,62 +148,95 @@ const ManageLoan = () => {
           </Link>
         </div>
       ) : (
-        <div className="overflow-x-auto bg-base-100 rounded-xl shadow-lg border border-base-200">
-          <table className="table w-full">
-            <thead className="bg-base-200">
-              <tr>
-                <th>Image</th>
-                <th>Title</th>
-                <th>Interest</th>
-                <th>Category</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loans.map((loan) => (
-                <tr key={loan._id} className="hover">
-                  <td>
-                    <div className="avatar">
-                      <div className="mask mask-squircle w-12 h-12">
-                        <img src={loan.loanImage} alt={loan.title} />
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="font-bold">{loan.title}</div>
-                  </td>
-                  <td>{loan.interestRate}%</td>
-                  <td>{loan.category}</td>
-                  <td>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => openUpdateModal(loan)}
-                        className="btn btn-ghost btn-xs text-warning tooltip"
-                        data-tip="Edit Loan"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(loan._id)}
-                        className="btn btn-ghost btn-xs text-error tooltip"
-                        data-tip="Delete Loan"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <>
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <input
+              type="text"
+              placeholder="Search by title..."
+              className="input input-bordered w-full md:w-1/4"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <select
+              className="select select-bordered w-full md:w-1/4"
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              <option value="Personal">Personal Loan</option>
+              <option value="Business">Business Loan</option>
+              <option value="Home">Home Loan</option>
+              <option value="Vehicle">Vehicle Loan</option>
+              <option value="Education">Education Loan</option>
+              <option value="Agriculture">Agriculture Loan</option>
+            </select>
+          </div>
+
+          {filteredLoans.length === 0 ? (
+            <div className="text-center py-10">
+              <p className="text-lg text-gray-500">
+                No loans found matching your filters.
+              </p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto bg-base-100 rounded-xl shadow-lg border border-base-200">
+              <table className="table w-full">
+                <thead className="bg-base-200">
+                  <tr>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Interest</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredLoans.map((loan) => (
+                    <tr key={loan._id} className="hover">
+                      <td>
+                        <div className="avatar">
+                          <div className="mask mask-squircle w-12 h-12">
+                            <img src={loan.loanImage} alt={loan.title} />
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="font-bold">{loan.title}</div>
+                      </td>
+                      <td>{loan.interestRate}%</td>
+                      <td>{loan.category}</td>
+                      <td>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => openUpdateModal(loan)}
+                            className="btn btn-ghost btn-xs text-warning tooltip"
+                            data-tip="Edit Loan"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDelete(loan._id)}
+                            className="btn btn-ghost btn-xs text-error tooltip"
+                            data-tip="Delete Loan"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
       )}
 
       {/* Update Loan Modal */}
       <dialog id="update_loan_modal" className="modal">
         <div className="modal-box w-11/12 max-w-4xl">
             <h3 className="font-bold text-lg mb-4">Update Loan</h3>
-            <form onSubmit={handleSubmit(onUpdateSubmit)} className="space-y-6">
+            <form id="update-loan-form" onSubmit={handleSubmit(onUpdateSubmit)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="form-control">
                         <label className="label">
@@ -314,20 +359,21 @@ const ManageLoan = () => {
                         </label>
                     </div>
                 </div>
-
-                <div className="modal-action">
-                    <form method="dialog">
-                        <button className="btn btn-ghost mr-2">Cancel</button>
-                    </form>
-                    <button 
-                        type="submit" 
-                        className={`btn btn-primary ${isUpdating ? 'loading' : ''}`}
-                        disabled={isUpdating}
-                    >
-                        {isUpdating ? 'Updating...' : 'Update Loan'}
-                    </button>
-                </div>
             </form>
+
+            <div className="modal-action">
+                <form method="dialog">
+                    <button className="btn btn-ghost mr-2">Cancel</button>
+                </form>
+                <button 
+                    type="submit" 
+                    form="update-loan-form"
+                    className={`btn btn-primary ${isUpdating ? 'loading' : ''}`}
+                    disabled={isUpdating}
+                >
+                    {isUpdating ? 'Updating...' : 'Update Loan'}
+                </button>
+            </div>
         </div>
       </dialog>
     </div>
