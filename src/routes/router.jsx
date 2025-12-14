@@ -19,6 +19,8 @@ import MyLoans from "../pages/Dashboard/Borrower/MyLoans";
 import PendingApplication from "../pages/Dashboard/Manager/PendingApplication";
 import ApprovedApplication from "../pages/Dashboard/Manager/ApprovedApplication";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
+import AllLoan from "../pages/Dashboard/Admin/AllLoans";
+
 import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
@@ -131,6 +133,16 @@ const router = createBrowserRouter([
           <PrivateRoute>
             <AdminRoute>
               <ManageUsers />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "all-loan",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AllLoan></AllLoan>
             </AdminRoute>
           </PrivateRoute>
         ),
