@@ -119,13 +119,13 @@ const Navbar = () => {
                         <span className="text-xs">{user.email}</span>
                       </div>
                     </li>
-                    <div className="divider my-0"></div>
+                    {/* <div className="divider my-0"></div>
                     <li>
                       <Link to="/dashboard/my-loans">My Loans</Link>
                     </li>
                     <li>
                       <Link to="/dashboard/profile">Profile</Link>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
                 <button
