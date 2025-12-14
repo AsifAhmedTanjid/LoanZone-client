@@ -16,6 +16,7 @@ import ManagerRoute from "./ManagerRoute";
 import ManageLoan from "../pages/Dashboard/Manager/ManageLoan";
 import LoanApplication from "../pages/LoanApplication/LoanApplication";
 import MyLoans from "../pages/Dashboard/Borrower/MyLoans";
+import PendingApplication from "../pages/Dashboard/Manager/PendingApplication";
 
 const router = createBrowserRouter([
   {
@@ -89,6 +90,16 @@ const router = createBrowserRouter([
           <PrivateRoute>
             <ManagerRoute>
               <ManageLoan />
+            </ManagerRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "pending-loans",
+        element: (
+          <PrivateRoute>
+            <ManagerRoute>
+              <PendingApplication />
             </ManagerRoute>
           </PrivateRoute>
         ),
