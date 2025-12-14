@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const Banner = () => {
   return (
     <div
-      className="hero min-h-[600px] rounded-xl overflow-hidden my-8 relative"
+      className="hero min-h-150 rounded-xl overflow-hidden my-8 relative"
       style={{
         backgroundImage:
           "url(https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1951&q=80)",

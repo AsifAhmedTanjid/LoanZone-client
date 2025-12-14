@@ -78,7 +78,7 @@ const Testimonials = () => {
           <div className="card-body items-center text-center py-12">
             <FaQuoteLeft className="text-4xl text-primary/20 mb-6" />
 
-            <div className="min-h-[200px] flex items-center justify-center w-full">
+            <div className="min-h-50 flex items-center justify-center w-full">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentIndex}
