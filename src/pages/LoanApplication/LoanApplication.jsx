@@ -92,7 +92,7 @@ const LoanApplication = () => {
                             </label>
                             <input 
                                 type="text" 
-                                value={`${loan?.interestRate}%` || ''} 
+                                value={loan?.interestRate ? `${loan.interestRate}%` : ''} 
                                 readOnly 
                                 className="input input-bordered w-full bg-base-200 cursor-not-allowed" 
                             />
@@ -232,7 +232,7 @@ const LoanApplication = () => {
                             <span className="label-text font-semibold">Address</span>
                         </label>
                         <textarea 
-                            className="textarea textarea-bordered h-24 focus:textarea-primary"
+                            className="textarea textarea-bordered h-24 focus:textarea-primary w-full"
                             placeholder="Your full address..."
                             {...register("address", { required: "Address is required" })}
                         ></textarea>
@@ -244,7 +244,7 @@ const LoanApplication = () => {
                             <span className="label-text font-semibold">Extra Notes (Optional)</span>
                         </label>
                         <textarea 
-                            className="textarea textarea-bordered h-24 focus:textarea-primary"
+                            className="textarea textarea-bordered h-24 focus:textarea-primary w-full"
                             placeholder="Any additional information..."
                             {...register("notes")}
                         ></textarea>

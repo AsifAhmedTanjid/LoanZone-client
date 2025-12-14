@@ -2,12 +2,12 @@ import React from 'react';
 import { Link } from 'react-router';
 
 const LoanCard = ({ loan }) => {
-    const { _id, title, image, category, interestRate, maxLoanLimit } = loan;
+    const { _id, title, loanImage, category, interestRate, maxLoanLimit } = loan;
 
     return (
         <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-base-200">
             <figure className="h-48 overflow-hidden">
-                <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+                <img src={loanImage} alt={title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
             </figure>
             <div className="card-body">
                 <div className="flex justify-between items-start">

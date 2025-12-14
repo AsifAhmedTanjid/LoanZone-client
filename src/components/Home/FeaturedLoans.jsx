@@ -1,29 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
 import LoanCard from '../shared/LoanCard/LoanCard';
-
+import { useQuery } from '@tanstack/react-query';
+import { HashLoader } from 'react-spinners';
+import useAxios from '../../hooks/useAxios';
 
 const FeaturedLoans = () => {
-    const [loans, setLoans] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const axiosPublic = useAxios();
+    const { data: loans = [], isLoading } = useQuery({
+        queryKey: ['featured-loans'],
+        queryFn: async () => {
+            const { data } = await axiosPublic.get('/loans');
+            return data.slice(0, 6);
+        }
+    });
 
-    useEffect(() => {
-        fetch('/loans.json')
-            .then(res => res.json())
-            .then(data => {
-                setLoans(data.slice(0, 6));
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error("Failed to fetch loans:", err);
-                setLoading(false);
-            });
-    }, []);
-
-    if (loading) {
+    if (isLoading) {
         return (
             <div className="flex justify-center items-center py-12">
-                <span className="loading loading-spinner loading-lg text-primary"></span>
+                <HashLoader color="#36d7b7" size={50} />
             </div>
         );
     }

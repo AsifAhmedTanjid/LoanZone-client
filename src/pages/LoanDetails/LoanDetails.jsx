@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect} from 'react';
 import { useParams, useNavigate } from 'react-router';
 import Container from '../../components/shared/Container/Container';
 import useAuth from '../../hooks/useAuth';
 import useRole from '../../hooks/useRole';
 import { HashLoader } from 'react-spinners';
+import { useQuery } from '@tanstack/react-query';
+import useAxios from '../../hooks/useAxios';
 import { 
     FaMoneyBillWave, 
     FaPercent, 
@@ -19,17 +21,19 @@ import {
 
 const LoanDetails = () => {
     const { id } = useParams();
-    const [loan, setLoan] = useState(null);
-    const [loading, setLoading] = useState(true);
     const { user } = useAuth();
     const [role] = useRole();
     const navigate = useNavigate();
-    const requiredDocs = [
-        "Valid Government ID (NID/Passport)",
-        "Bank Statement (Last 6 months)",
-        "Proof of Income / Salary Certificate",
-        "Utility Bill Copy"
-    ];
+    const axiosPublic = useAxios();
+
+    const { data: loan, isLoading: loading } = useQuery({
+        queryKey: ['loan', id],
+        queryFn: async () => {
+            const { data } = await axiosPublic.get(`/loans/${id}`);
+            return data;
+        }
+    });
+
 
     const eligibility = [
         "Age: 21 - 60 years",
@@ -66,20 +70,6 @@ const LoanDetails = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [id]);
 
-    useEffect(() => {
-        fetch('/loans.json')
-            .then(res => res.json())
-            .then(data => {
-                const foundLoan = data.find(l => l._id === parseInt(id) || l._id === id);
-                setLoan(foundLoan);
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error("Failed to fetch loan details:", err);
-                setLoading(false);
-            });
-    }, [id]);
-
     const handleApply = () => {
         navigate(`/apply-loan/${id}`);
     };
@@ -103,7 +93,7 @@ const LoanDetails = () => {
         );
     }
 
-    const { title, image, category, interestRate, maxLoanLimit, description, emiOptions } = loan;
+    const { title, loanImage, category, interestRate, maxLoanLimit, description, emiPlans, requiredDocuments } = loan;
 
     return (
         <div className="bg-base-200 min-h-screen py-12">
@@ -117,7 +107,7 @@ const LoanDetails = () => {
                     <div className="space-y-8">
                         <div className="rounded-2xl overflow-hidden shadow-2xl h-[300px] md:h-[400px] group">
                             <img 
-                                src={image} 
+                                src={loanImage} 
                                 alt={title} 
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                             />
@@ -207,12 +197,10 @@ const LoanDetails = () => {
                                     <FaFileAlt className="text-warning" /> Documents
                                 </h4>
                                 <ul className="space-y-2">
-                                    {requiredDocs.map((item, idx) => (
-                                        <li key={idx} className="text-sm text-base-content/70 flex items-start gap-2">
-                                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-base-content/40"></span>
-                                            {item}
-                                        </li>
-                                    ))}
+                                    <li className="text-sm text-base-content/70 flex items-start gap-2">
+                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-base-content/40"></span>
+                                        {requiredDocuments}
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -225,7 +213,7 @@ const LoanDetails = () => {
                                 Flexible EMI Options
                             </h3>
                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                {emiOptions?.map((plan, index) => (
+                                {emiPlans?.map((plan, index) => (
                                     <div key={index} className="flex items-center gap-2 bg-base-200 p-3 rounded-lg border border-base-300 hover:border-primary transition-colors cursor-default">
                                         <FaCheckCircle className="text-success text-sm" />
                                         <span className="font-medium text-sm md:text-base">{plan}</span>
