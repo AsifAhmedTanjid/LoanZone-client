@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
@@ -11,6 +12,9 @@ const ManageLoan = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
+  const [selectedLoan, setSelectedLoan] = useState(null);
+  const { register, handleSubmit,setValue, formState: { errors } } = useForm();
+
   const {
     data: loans = [],
     isLoading,
@@ -45,6 +49,28 @@ const ManageLoan = () => {
     },
   });
 
+  const { mutate: updateLoan, isPending: isUpdating } = useMutation({
+    mutationFn: async (updatedData) => {
+        const { _id, ...dataToSend } = updatedData;
+        const { data } = await axiosSecure.patch(`/loans/${_id}`, dataToSend);
+        return data;
+    },
+    onSuccess: (data) => {
+        if (data.modifiedCount > 0) {
+            toast.success('Loan updated successfully');
+            queryClient.invalidateQueries(['manage-loans', user?.email]);
+            document.getElementById('update_loan_modal').close();
+            setSelectedLoan(null);
+        } else {
+            toast.success('No changes made');
+            document.getElementById('update_loan_modal').close();
+        }
+    },
+    onError: (error) => {
+        toast.error("hello",error.message);
+    }
+  });
+
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -59,6 +85,25 @@ const ManageLoan = () => {
         deleteLoan(id);
       }
     });
+  };
+
+  const openUpdateModal = (loan) => {
+    setSelectedLoan(loan);
+    setValue("title", loan.title);
+    setValue("category", loan.category);
+    setValue("interestRate", loan.interestRate);
+    setValue("maxLoanLimit", loan.maxLoanLimit);
+    setValue("requiredDocuments", loan.requiredDocuments);
+    setValue("emiPlans", loan.emiPlans);
+    setValue("loanImage", loan.loanImage);
+    setValue("description", loan.description);
+    setValue("showOnHome", loan.showOnHome);
+    
+    document.getElementById('update_loan_modal').showModal();
+  };
+
+  const onUpdateSubmit = (data) => {
+    updateLoan({ ...data, _id: selectedLoan._id });
   };
 
   if (isLoading) {
@@ -119,13 +164,13 @@ const ManageLoan = () => {
                   <td>{loan.category}</td>
                   <td>
                     <div className="flex gap-2">
-                      <Link
-                        to={`/dashboard/update-loan/${loan._id}`}
+                      <button
+                        onClick={() => openUpdateModal(loan)}
                         className="btn btn-ghost btn-xs text-warning tooltip"
                         data-tip="Edit Loan"
                       >
                         Edit
-                      </Link>
+                      </button>
                       <button
                         onClick={() => handleDelete(loan._id)}
                         className="btn btn-ghost btn-xs text-error tooltip"
@@ -141,6 +186,150 @@ const ManageLoan = () => {
           </table>
         </div>
       )}
+
+      {/* Update Loan Modal */}
+      <dialog id="update_loan_modal" className="modal">
+        <div className="modal-box w-11/12 max-w-4xl">
+            <h3 className="font-bold text-lg mb-4">Update Loan</h3>
+            <form onSubmit={handleSubmit(onUpdateSubmit)} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text font-semibold">Loan Title</span>
+                        </label>
+                        <input
+                            type="text"
+                            className="input input-bordered w-full focus:input-primary"
+                            {...register("title", { required: "Loan title is required" })}
+                        />
+                        {errors.title && <span className="text-error text-sm mt-1">{errors.title.message}</span>}
+                    </div>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text font-semibold">Category</span>
+                        </label>
+                        <select 
+                            className="select select-bordered w-full focus:select-primary"
+                            {...register("category", { required: "Category is required" })}
+                        >
+                            <option value="">Select Category</option>
+                            <option value="Personal">Personal Loan</option>
+                            <option value="Business">Business Loan</option>
+                            <option value="Home">Home Loan</option>
+                            <option value="Vehicle">Vehicle Loan</option>
+                            <option value="Education">Education Loan</option>
+                            <option value="Agriculture">Agriculture Loan</option>
+                        </select>
+                        {errors.category && <span className="text-error text-sm mt-1">{errors.category.message}</span>}
+                    </div>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text font-semibold">Interest Rate (%)</span>
+                        </label>
+                        <input
+                            type="number"
+                            step="0.1"
+                            className="input input-bordered w-full focus:input-primary"
+                            {...register("interestRate", { 
+                                required: "Interest rate is required", 
+                                min: { value: 0, message: "Interest rate cannot be negative" } 
+                            })}
+                        />
+                        {errors.interestRate && <span className="text-error text-sm mt-1">{errors.interestRate.message}</span>}
+                    </div>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text font-semibold">Max Loan Limit ($)</span>
+                        </label>
+                        <input
+                            type="number"
+                            className="input input-bordered w-full focus:input-primary"
+                            {...register("maxLoanLimit", { 
+                                required: "Max limit is required", 
+                                min: { value: 100, message: "Max loan limit must be at least 100" } 
+                            })}
+                        />
+                        {errors.maxLoanLimit && <span className="text-error text-sm mt-1">{errors.maxLoanLimit.message}</span>}
+                    </div>
+                    <div className="form-control md:col-span-2">
+                        <label className="label">
+                            <span className="label-text font-semibold">Required Documents</span>
+                        </label>
+                        <input
+                            type="text"
+                            className="input input-bordered w-full focus:input-primary"
+                            {...register("requiredDocuments", { required: "Required documents are required" })}
+                        />
+                        {errors.requiredDocuments && <span className="text-error text-sm mt-1">{errors.requiredDocuments.message}</span>}
+                    </div>
+                    <div className="form-control md:col-span-2">
+                        <label className="label">
+                            <span className="label-text font-semibold">Available EMI Plans (Months)</span>
+                        </label>
+                        <div className="flex flex-wrap gap-4 p-4 border border-base-300 rounded-lg bg-base-200/30">
+                            {['6', '12', '18', '24', '36', '48', '60'].map((month) => (
+                                <label key={month} className="cursor-pointer label gap-2">
+                                    <input 
+                                        type="checkbox" 
+                                        value={`${month} Months`}
+                                        className="checkbox checkbox-primary checkbox-sm"
+                                        {...register("emiPlans", { required: "Select at least one EMI plan" })}
+                                    />
+                                    <span className="label-text">{month} Months</span>
+                                </label>
+                            ))}
+                        </div>
+                        {errors.emiPlans && <span className="text-error text-sm mt-1">{errors.emiPlans.message}</span>}
+                    </div>
+                    <div className="form-control md:col-span-2">
+                        <label className="label">
+                            <span className="label-text font-semibold">Loan Image URL</span>
+                        </label>
+                        <input
+                            type="url"
+                            className="input input-bordered w-full focus:input-primary"
+                            {...register("loanImage", { required: "Image URL is required" })}
+                        />
+                        {errors.loanImage && <span className="text-error text-sm mt-1">{errors.loanImage.message}</span>}
+                    </div>
+                    <div className="form-control md:col-span-2">
+                        <label className="label">
+                            <span className="label-text font-semibold">Description</span>
+                        </label>
+                        <textarea
+                            className="textarea textarea-bordered h-24 w-full focus:textarea-primary"
+                            {...register("description", { required: "Description is required" })}
+                        ></textarea>
+                        {errors.description && <span className="text-error text-sm mt-1">{errors.description.message}</span>}
+                    </div>
+
+                    <div className="form-control md:col-span-2">
+                        <label className="label cursor-pointer justify-start gap-4">
+                            <span className="label-text font-semibold">Show on Home Page</span>
+                            <input 
+                                type="checkbox" 
+                                className="toggle toggle-primary"
+                                {...register("showOnHome")} 
+                            />
+                        </label>
+                    </div>
+                </div>
+
+                <div className="modal-action">
+                    <form method="dialog">
+                        <button className="btn btn-ghost mr-2">Cancel</button>
+                    </form>
+                    <button 
+                        type="submit" 
+                        className={`btn btn-primary ${isUpdating ? 'loading' : ''}`}
+                        disabled={isUpdating}
+                    >
+                        {isUpdating ? 'Updating...' : 'Update Loan'}
+                    </button>
+                </div>
+            </form>
+        </div>
+      </dialog>
     </div>
   );
 };
