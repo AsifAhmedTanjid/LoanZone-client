@@ -11,6 +11,8 @@ const ManageUsers = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [suspendReason, setSuspendReason] = useState('');
     const [newRole, setNewRole] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [roleFilter, setRoleFilter] = useState('');
 
     const { data: users = [], isLoading } = useQuery({
         queryKey: ['users'],
@@ -63,6 +65,13 @@ const ManageUsers = () => {
         document.getElementById('suspend_modal').showModal();
     };
 
+    const filteredUsers = users.filter(user => {
+        const matchesSearch = (user.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) || 
+                              (user.email?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+        const matchesRole = roleFilter ? user.role === roleFilter : true;
+        return matchesSearch && matchesRole;
+    });
+
     if (isLoading) {
         return (
             <div className="flex justify-center items-center min-h-screen">
@@ -75,6 +84,26 @@ const ManageUsers = () => {
         <div className="container mx-auto px-4 py-8">
             <h2 className="text-3xl font-bold mb-6">Manage Users</h2>
             
+            <div className="flex flex-col md:flex-row gap-4 mb-6">
+                <input 
+                    type="text" 
+                    placeholder="Search by name or email..." 
+                    className="input input-bordered w-full md:w-1/4"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <select 
+                    className="select select-bordered w-full md:w-1/4"
+                    value={roleFilter}
+                    onChange={(e) => setRoleFilter(e.target.value)}
+                >
+                    <option value="">All Roles</option>
+                    <option value="admin">Admin</option>
+                    <option value="manager">Manager</option>
+                    <option value="borrower">Borrower</option>
+                </select>
+            </div>
+
             <div className="overflow-x-auto bg-base-100 rounded-xl shadow-lg border border-base-200">
                 <table className="table w-full">
                     <thead className="bg-base-200">
@@ -88,7 +117,7 @@ const ManageUsers = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user, index) => (
+                        {filteredUsers.map((user, index) => (
                             <tr key={user._id} className="hover">
                                 <th>{index + 1}</th>
                                 <td>{user.name}</td>
