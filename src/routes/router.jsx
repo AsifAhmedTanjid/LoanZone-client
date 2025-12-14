@@ -19,8 +19,9 @@ import MyLoans from "../pages/Dashboard/Borrower/MyLoans";
 import PendingApplication from "../pages/Dashboard/Manager/PendingApplication";
 import ApprovedApplication from "../pages/Dashboard/Manager/ApprovedApplication";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
-import AllLoan from "../pages/Dashboard/Admin/AllLoans";
-
+import AdminAllLoans from "../pages/Dashboard/Admin/AllLoans";
+import LoanApplications from "../pages/Dashboard/Admin/LoanApplications";
+import DashboardWelcome from "../pages/Dashboard/Shared/DashboardWelcome";
 import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
+      {
+        index: true,
+        element: <DashboardWelcome />
+      },
       {
         path: "add-loan",
         element: (
@@ -142,7 +147,17 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AdminRoute>
-              <AllLoan></AllLoan>
+              <AdminAllLoans />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "loan-applications",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <LoanApplications />
             </AdminRoute>
           </PrivateRoute>
         ),

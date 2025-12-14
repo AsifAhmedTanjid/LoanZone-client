@@ -45,6 +45,7 @@ const LoanApplication = () => {
             ...data,
             loanId: loan._id,
             loanTitle: loan.title,
+            loanCategory: loan.category,
             interestRate: loan.interestRate,
             borrowerEmail: user?.email,
             borrowerName: `${data.firstName} ${data.lastName}`,
