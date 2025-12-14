@@ -15,6 +15,7 @@ import AddLoan from "../pages/Dashboard/Manager/AddLoan";
 import ManagerRoute from "./ManagerRoute";
 import ManageLoan from "../pages/Dashboard/Manager/ManageLoan";
 import LoanApplication from "../pages/LoanApplication/LoanApplication";
+import MyLoans from "../pages/Dashboard/Borrower/MyLoans";
 
 const router = createBrowserRouter([
   {
@@ -89,6 +90,14 @@ const router = createBrowserRouter([
             <ManagerRoute>
               <ManageLoan />
             </ManagerRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "my-loans",
+        element: (
+          <PrivateRoute>
+            <MyLoans />
           </PrivateRoute>
         ),
       },
