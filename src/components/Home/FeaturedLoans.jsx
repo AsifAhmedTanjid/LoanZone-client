@@ -4,6 +4,7 @@ import LoanCard from '../shared/LoanCard/LoanCard';
 import { useQuery } from '@tanstack/react-query';
 import { HashLoader } from 'react-spinners';
 import useAxios from '../../hooks/useAxios';
+import { motion } from 'framer-motion';
 
 const FeaturedLoans = () => {
     const axiosPublic = useAxios();
@@ -16,6 +17,21 @@ const FeaturedLoans = () => {
         }
     });
 
+    const container = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    };
+
+    const item = {
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0 }
+    };
+
     if (isLoading) {
         return (
             <div className="flex justify-center items-center py-12">
@@ -27,20 +43,42 @@ const FeaturedLoans = () => {
     return (
         <div className="py-12 my-12">
             <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold mb-4">Available Loans</h2>
-                <p className="text-base-content/70 max-w-2xl mx-auto">
+                <motion.h2 
+                    initial={{ opacity: 0, y: -20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ duration: 0.5 }}
+                    className="text-3xl font-bold mb-4"
+                >
+                    Available Loans
+                </motion.h2>
+                <motion.p 
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: false }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="text-base-content/70 max-w-2xl mx-auto"
+                >
                     Explore our most popular loan packages designed to meet your financial needs.
-                </p>
+                </motion.p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <motion.div 
+                variants={container}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: false, margin: "-100px" }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
                 {loans.map(loan => (
-                    <LoanCard key={loan._id} loan={loan} />
+                    <motion.div key={loan._id} variants={item}>
+                        <LoanCard loan={loan} />
+                    </motion.div>
                 ))}
-            </div>
+            </motion.div>
 
             <div className="text-center mt-12">
-                <Link to="/all-loans" className="btn btn-outline btn-primary btn-wide">
+                <Link to="/all-loans" className="btn btn-outline btn-primary btn-wide hover:scale-105 transition-transform">
                     See All Loans
                 </Link>
             </div>

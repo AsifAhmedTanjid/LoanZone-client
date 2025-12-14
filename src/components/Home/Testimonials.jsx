@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaQuoteLeft, FaStar } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Testimonials = () => {
   const testimonials = [
@@ -44,12 +45,6 @@ const Testimonials = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
   }, [testimonials.length]);
 
-  const prevSlide = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length
-    );
-  };
-
   useEffect(() => {
     const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
@@ -58,82 +53,90 @@ const Testimonials = () => {
   return (
     <div className="py-12 my-12">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-4">What Our Customers Say</h2>
-        <p className="text-base-content/70 max-w-2xl mx-auto">
+        <motion.h2 
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          className="text-3xl font-bold mb-4"
+        >
+          What Our Customers Say
+        </motion.h2>
+        <motion.p 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false }}
+          transition={{ delay: 0.2 }}
+          className="text-base-content/70 max-w-2xl mx-auto"
+        >
           Don't just take our word for it. Here's what our satisfied borrowers
           have to say about their experience with LoanZone.
-        </p>
+        </motion.p>
       </div>
 
-      <div className="relative mx-auto px-4">
-        <div className="card bg-base-100 shadow-xl border border-base-200">
+      <div className="relative mx-auto px-4 max-w-4xl">
+        <div className="card bg-base-100 shadow-xl border border-base-200 overflow-hidden">
           <div className="card-body items-center text-center py-12">
             <FaQuoteLeft className="text-4xl text-primary/20 mb-6" />
 
-            <p className="text-xl italic mb-8 max-w-2xl min-h-[100px] flex items-center justify-center">
-              "{testimonials[currentIndex].text}"
-            </p>
+            <div className="min-h-[200px] flex items-center justify-center w-full">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentIndex}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ duration: 0.5 }}
+                  className="w-full"
+                >
+                  <p className="text-xl italic mb-8 max-w-2xl mx-auto">
+                    "{testimonials[currentIndex].text}"
+                  </p>
 
-            <div className="flex items-center gap-1 mb-4">
-              {[...Array(5)].map((_, i) => (
-                <FaStar
-                  key={i}
-                  className={
-                    i < testimonials[currentIndex].rating
-                      ? "text-warning"
-                      : "text-base-300"
-                  }
-                />
-              ))}
+                  <div className="flex justify-center items-center gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <FaStar
+                        key={i}
+                        className={
+                          i < testimonials[currentIndex].rating
+                            ? "text-warning"
+                            : "text-base-300"
+                        }
+                      />
+                    ))}
+                  </div>
+
+                  <div className="flex flex-col items-center gap-2 mt-4">
+                    <div className="avatar">
+                      <div className="w-16 h-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                        <img
+                          src={testimonials[currentIndex].image}
+                          alt={testimonials[currentIndex].name}
+                        />
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <h4 className="font-bold text-lg">
+                        {testimonials[currentIndex].name}
+                      </h4>
+                      <p className="text-sm text-base-content/60">
+                        {testimonials[currentIndex].role}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
-
-            <div className="flex items-center gap-4 mt-2">
-              <div className="avatar">
-                <div className="w-12 h-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                  <img
-                    src={testimonials[currentIndex].image}
-                    alt={testimonials[currentIndex].name}
-                  />
-                </div>
-              </div>
-              <div className="text-left">
-                <h4 className="font-bold text-lg">
-                  {testimonials[currentIndex].name}
-                </h4>
-                <p className="text-sm text-base-content/70">
-                  {testimonials[currentIndex].role}
-                </p>
-              </div>
+            
+            <div className="flex gap-2 mt-6">
+                {testimonials.map((_, idx) => (
+                    <button 
+                        key={idx}
+                        onClick={() => setCurrentIndex(idx)}
+                        className={`w-3 h-3 rounded-full transition-colors ${idx === currentIndex ? 'bg-primary' : 'bg-base-300'}`}
+                    />
+                ))}
             </div>
           </div>
-        </div>
-
-        <div className="absolute top-1/2 -translate-y-1/2 left-0 -ml-4 md:-ml-12">
-          <button
-            onClick={prevSlide}
-            className="btn btn-circle btn-primary btn-outline"
-          >
-            ❮
-          </button>
-        </div>
-        <div className="absolute top-1/2 -translate-y-1/2 right-0 -mr-4 md:-mr-12">
-          <button
-            onClick={nextSlide}
-            className="btn btn-circle btn-primary btn-outline"
-          >
-            ❯
-          </button>
-        </div>
-        <div className="flex justify-center gap-2 mt-8">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`w-3 h-3 rounded-full transition-colors ${
-                index === currentIndex ? "bg-primary" : "bg-base-300"
-              }`}
-            ></button>
-          ))}
         </div>
       </div>
     </div>

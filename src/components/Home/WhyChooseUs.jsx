@@ -7,7 +7,7 @@ import {
   FaHeadset,
   FaFileContract,
 } from "react-icons/fa";
-import Container from "../shared/Container/Container";
+import { motion } from "framer-motion";
 
 const WhyChooseUs = () => {
   const features = [
@@ -49,22 +49,58 @@ const WhyChooseUs = () => {
     },
   ];
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, scale: 0.8 },
+    show: { opacity: 1, scale: 1 }
+  };
+
   return (
     <div className="py-12 rounded-3xl my-12">
       <div>
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Why Choose LoanZone?</h2>
-          <p className="text-base-content/70 max-w-2xl mx-auto">
+          <motion.h2 
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false }}
+            className="text-3xl font-bold mb-4"
+          >
+            Why Choose LoanZone?
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: false }}
+            transition={{ delay: 0.2 }}
+            className="text-base-content/70 max-w-2xl mx-auto"
+          >
             We are committed to providing the best financial solutions with
             transparency and speed.
-          </p>
+          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto">
+        <motion.div 
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, margin: "-50px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto"
+        >
           {features.map((feature, index) => (
-            <div
+            <motion.div
               key={index}
-              className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-base-200"
+              variants={item}
+              whileHover={{ scale: 1.03 }}
+              className="card bg-base-100 shadow-lg hover:shadow-xl transition-all duration-300 border border-base-200"
             >
               <div className="card-body items-center text-center">
                 <div className="text-4xl text-primary mb-4 p-4 bg-primary/10 rounded-full">
@@ -73,9 +109,9 @@ const WhyChooseUs = () => {
                 <h3 className="card-title mb-2">{feature.title}</h3>
                 <p className="text-base-content/70">{feature.description}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import {
   FaCheckCircle,
   FaMoneyBillWave,
 } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const HowItWorks = () => {
   const steps = [
@@ -38,35 +39,71 @@ const HowItWorks = () => {
     },
   ];
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 30 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50 } }
+  };
+
   return (
-    <div className="py-12 rounded-xl my-12">
+    <div className="py-12 rounded-xl my-12 bg-base-200/30 px-4">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-4">How It Works</h2>
-        <p className="text-base-content/70 max-w-2xl mx-auto">
+        <motion.h2 
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: false }}
+          className="text-3xl font-bold mb-4"
+        >
+          How It Works
+        </motion.h2>
+        <motion.p 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false }}
+          transition={{ delay: 0.2 }}
+          className="text-base-content/70 max-w-2xl mx-auto"
+        >
           Getting a loan with LoanZone is simple and transparent. Follow these
           easy steps to secure your funding.
-        </p>
+        </motion.p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 ">
+      <motion.div 
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: false, margin: "-50px" }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+      >
         {steps.map((step) => (
-          <div
+          <motion.div
             key={step.id}
-            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-base-200"
+            variants={item}
+
+            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 border border-base-200 relative overflow-hidden group"
           >
-            <div className="card-body items-center text-center">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+               <span className="text-6xl font-bold text-primary">{step.id}</span>
+            </div>
+            <div className="card-body items-center text-center z-10">
+              <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4   transition-colors duration-300">
                 {step.icon}
               </div>
               <h3 className="card-title mb-2">{step.title}</h3>
               <p className="text-base-content/70 text-sm">{step.description}</p>
-              <div className="badge badge-primary badge-outline mt-4">
-                Step {step.id}
-              </div>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };
