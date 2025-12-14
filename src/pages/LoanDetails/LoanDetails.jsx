@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import Container from '../../components/shared/Container/Container';
 import useAuth from '../../hooks/useAuth';
+import useRole from '../../hooks/useRole';
 import { HashLoader } from 'react-spinners';
 import { 
     FaMoneyBillWave, 
@@ -21,6 +22,7 @@ const LoanDetails = () => {
     const [loan, setLoan] = useState(null);
     const [loading, setLoading] = useState(true);
     const { user } = useAuth();
+    const [role] = useRole();
     const navigate = useNavigate();
     const requiredDocs = [
         "Valid Government ID (NID/Passport)",
@@ -236,11 +238,12 @@ const LoanDetails = () => {
                             <button 
                                 onClick={handleApply} 
                                 className="btn btn-primary btn-lg w-full shadow-lg hover:shadow-primary/50 transition-all transform hover:-translate-y-1 "
-                                disabled={!user}
+                                disabled={!user || role === 'manager' || role === 'admin'}
                             >
                                 Apply for this Loan
                             </button>
                             {!user && <p className="text-xs text-center w-full mt-2 text-error font-medium">Please login to apply for this loan</p>}
+                            {(role === 'manager' || role === 'admin') && <p className="text-xs text-center w-full mt-2 text-error font-medium">Managers and Admins cannot apply for loans</p>}
                         </div>
 
                         <div className="divider"></div>
