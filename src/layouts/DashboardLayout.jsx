@@ -3,6 +3,7 @@ import Sidebar from '../components/Dashboard/Sidebar/Sidebar'
 import Footer from '../components/shared/Footer/Footer'
 import Topbar from '../components/Dashboard/Topbar/Topbar'
 import { useState } from 'react'
+import ScrollToTop from '../components/shared/ScrollToTop'
 
 const DashboardLayout = () => {
   const [isActive, setActive] = useState(false)
@@ -14,6 +15,7 @@ const DashboardLayout = () => {
 
   return (
     <div className='min-h-screen flex flex-col'>
+      <ScrollToTop />
       {/* Topbar */}
       <Topbar handleToggle={handleToggle} />
       
