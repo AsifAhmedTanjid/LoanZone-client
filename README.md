@@ -56,7 +56,7 @@ LoanZone is a comprehensive Loan Management System designed to bridge the gap be
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/AsifAhmedTanjid/LoanZone-client.git
     cd LoanZone-client
     ```
 
