@@ -129,7 +129,7 @@ const MyLoans = () => {
                     <h3 className="text-xl font-semibold text-base-content/70">You haven't applied for any loans yet.</h3>
                 </div>
             ) : (
-                <div className="overflow-x-auto bg-base-100 rounded-xl shadow-lg border border-base-200">
+                <div className="overflow-x-auto bg-base-100 rounded-xl shadow-lg border border-base-200 max-w-full">
                     <table className="table w-full">
                         <thead className="bg-base-200">
                             <tr>

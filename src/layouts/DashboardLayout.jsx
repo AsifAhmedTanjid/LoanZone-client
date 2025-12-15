@@ -24,7 +24,7 @@ const DashboardLayout = () => {
         <Sidebar isActive={isActive} />
         
         {/* Right Side: Dashboard Dynamic Content */}
-        <div className='flex-1 p-5'>
+        <div className='flex-1 p-5 min-w-0'>
           <Outlet />
         </div>
       </div>
