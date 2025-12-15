@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { HashLoader } from 'react-spinners';
 import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
 
 const MyLoans = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
     const [selectedApplication, setSelectedApplication] = useState(null);
+    const [paymentDetails, setPaymentDetails] = useState(null);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const { data: applications = [], isLoading } = useQuery({
         queryKey: ['my-applications', user?.email],
@@ -19,6 +23,33 @@ const MyLoans = () => {
         },
         enabled: !!user?.email
     });
+
+    useEffect(() => {
+        const success = searchParams.get('success');
+        const sessionId = searchParams.get('session_id');
+        const applicationId = searchParams.get('applicationId');
+
+        if (success === 'true' && sessionId && applicationId) {
+            const verifyPayment = async () => {
+                try {
+                    const { data } = await axiosSecure.post('/verify-payment', { sessionId, applicationId });
+                    if (data.success) {
+                        Swal.fire({
+                            title: 'Payment Successful!',
+                            text: 'Your application fee has been paid.',
+                            icon: 'success'
+                        });
+                        queryClient.invalidateQueries(['my-applications', user?.email]);
+                        setSearchParams({});
+                    }
+                } catch (error) {
+                    console.error("Payment verification failed", error);
+                
+                }
+            };
+            verifyPayment();
+        }
+    }, [searchParams, axiosSecure, queryClient, user?.email, setSearchParams]);
 
     const { mutate: cancelApplication } = useMutation({
         mutationFn: async (id) => {
@@ -53,17 +84,32 @@ const MyLoans = () => {
         });
     };
 
-    const handlePay = () => {
-        Swal.fire({
-            title: 'Payment Feature',
-            text: 'Stripe payment integration coming soon!',
-            icon: 'info'
-        });
+    const handlePay = async (app) => {
+        try {
+            const { data } = await axiosSecure.post('/create-checkout-session', {
+                applicationId: app._id,
+                loanTitle: app.loanTitle,
+                amount: 10,
+                borrowerEmail: user.email,
+                borrowerName: user.displayName
+            });
+            if (data.url) {
+                window.location.href = data.url;
+            }
+        } catch (error) {
+            console.error("Payment initiation failed", error);
+            toast.error("Failed to initiate payment");
+        }
     };
 
     const openModal = (app) => {
         setSelectedApplication(app);
         document.getElementById('loan_details_modal').showModal();
+    };
+
+    const openPaymentModal = (app) => {
+        setPaymentDetails(app);
+        document.getElementById('payment_details_modal').showModal();
     };
 
     if (isLoading) {
@@ -131,12 +177,17 @@ const MyLoans = () => {
                                                 </button>
                                             )}
 
-                                            {app.feeStatus === 'paid' ? (
-                                                <span className="badge badge-success badge-outline p-3">Paid</span>
+                                            {app.paymentStatus === 'paid' ? (
+                                                <button 
+                                                    onClick={() => openPaymentModal(app)}
+                                                    className="badge badge-success badge-outline p-3 cursor-pointer hover:bg-success hover:text-white transition-colors"
+                                                >
+                                                    Paid
+                                                </button>
                                             ) : (
                                                 <button 
                                                     className="btn btn-sm btn-success text-white" 
-                                                    onClick={() => handlePay()}
+                                                    onClick={() => handlePay(app)}
                                                 >
                                                     Pay
                                                 </button>
@@ -196,6 +247,44 @@ const MyLoans = () => {
                             <div className="col-span-full">
                                 <p className="text-sm opacity-70">Address</p>
                                 <p className="font-semibold">{selectedApplication.address}</p>
+                            </div>
+                        </div>
+                    )}
+                    <div className="modal-action">
+                        <form method="dialog">
+                            <button className="btn">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
+
+            {/* Payment Details Modal */}
+            <dialog id="payment_details_modal" className="modal">
+                <div className="modal-box">
+                    <h3 className="font-bold text-lg mb-4 text-success">Payment Details</h3>
+                    {paymentDetails && (
+                        <div className="space-y-4">
+                            <div className="p-4 bg-base-200 rounded-lg">
+                                <p className="text-sm opacity-70">Transaction ID</p>
+                                <p className="font-mono font-semibold break-all">{paymentDetails.transactionId}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm opacity-70">Loan ID</p>
+                                <p className="font-mono font-semibold">{paymentDetails._id}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm opacity-70">Payer Email</p>
+                                <p className="font-semibold">{paymentDetails.paymentEmail || paymentDetails.borrowerEmail}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm opacity-70">Amount Paid</p>
+                                <p className="font-semibold text-xl">${paymentDetails.paymentAmount || 10}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm opacity-70">Payment Date</p>
+                                <p className="font-semibold">
+                                    {paymentDetails.paymentDate ? new Date(paymentDetails.paymentDate).toLocaleString() : 'N/A'}
+                                </p>
                             </div>
                         </div>
                     )}

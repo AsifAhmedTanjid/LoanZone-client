@@ -105,7 +105,7 @@ const LoanDetails = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
                     <div className="space-y-8">
-                        <div className="rounded-2xl overflow-hidden shadow-2xl h-[300px] md:h-[400px] group">
+                        <div className="rounded-2xl overflow-hidden shadow-2xl h-75 md:h-100 group">
                             <img 
                                 src={loanImage} 
                                 alt={title} 

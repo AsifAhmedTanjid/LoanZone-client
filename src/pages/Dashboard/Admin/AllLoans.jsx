@@ -165,7 +165,7 @@ const AllLoans = () => {
       </div>
 
       <div className="overflow-x-auto w-full max-w-[calc(100vw-2rem)] md:max-w-full bg-base-100 rounded-xl shadow-lg border border-base-200">
-        <table className="table w-full min-w-[600px]">
+        <table className="table w-full min-w-150">
           <thead className="bg-base-200">
             <tr>
               <th>Image</th>
