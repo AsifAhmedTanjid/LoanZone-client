@@ -1,8 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Container from '../../components/shared/Container/Container';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaHeadset } from 'react-icons/fa';
+import { useForm } from 'react-hook-form';
+import useAxios from '../../hooks/useAxios';
+import Swal from 'sweetalert2';
 
 const Contact = () => {
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const axios = useAxios();
+    const [isSending, setIsSending] = useState(false);
+
+    const onSubmit = async (data) => {
+        setIsSending(true);
+        try {
+            const res = await axios.post('/send-email', data);
+            if (res.data.success) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Message sent successfully!',
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                });
+                reset();
+            }
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Failed to send message. Please try again.',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        } finally {
+            setIsSending(false);
+        }
+    };
+
     return (
         <Container>
             <div className="py-12">
@@ -79,19 +112,31 @@ const Contact = () => {
                     <div className="card bg-base-100 shadow-xl border border-base-200">
                         <div className="card-body">
                             <h2 className="card-title text-2xl mb-6">Send us a Message</h2>
-                            <form className="space-y-4">
+                            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div className="form-control">
                                         <label className="label">
                                             <span className="label-text">First Name</span>
                                         </label>
-                                        <input type="text" placeholder="John" className="input input-bordered w-full" />
+                                        <input 
+                                            type="text" 
+                                            placeholder="John" 
+                                            className="input input-bordered w-full" 
+                                            {...register("firstName", { required: true })}
+                                        />
+                                        {errors.firstName && <span className="text-red-500 text-sm">First Name is required</span>}
                                     </div>
                                     <div className="form-control">
                                         <label className="label">
                                             <span className="label-text">Last Name</span>
                                         </label>
-                                        <input type="text" placeholder="Doe" className="input input-bordered w-full" />
+                                        <input 
+                                            type="text" 
+                                            placeholder="Doe" 
+                                            className="input input-bordered w-full" 
+                                            {...register("lastName", { required: true })}
+                                        />
+                                        {errors.lastName && <span className="text-red-500 text-sm">Last Name is required</span>}
                                     </div>
                                 </div>
 
@@ -99,31 +144,49 @@ const Contact = () => {
                                     <label className="label">
                                         <span className="label-text">Email Address</span>
                                     </label>
-                                    <input type="email" placeholder="john@example.com" className="input input-bordered w-full" />
+                                    <input 
+                                        type="email" 
+                                        placeholder="john@example.com" 
+                                        className="input input-bordered w-full" 
+                                        {...register("email", { required: true })}
+                                    />
+                                    {errors.email && <span className="text-red-500 text-sm">Email is required</span>}
                                 </div>
 
                                 <div className="form-control">
                                     <label className="label">
                                         <span className="label-text">Subject</span>
                                     </label>
-                                    <select className="select select-bordered w-full" defaultValue="Select a topic">
+                                    <select 
+                                        className="select select-bordered w-full" 
+                                        defaultValue="Select a topic"
+                                        {...register("subject", { required: true })}
+                                    >
                                         <option disabled>Select a topic</option>
-                                        <option>Loan Application</option>
-                                        <option>Repayment Inquiry</option>
-                                        <option>Technical Support</option>
-                                        <option>General Inquiry</option>
+                                        <option value="Loan Application">Loan Application</option>
+                                        <option value="Repayment Inquiry">Repayment Inquiry</option>
+                                        <option value="Technical Support">Technical Support</option>
+                                        <option value="General Inquiry">General Inquiry</option>
                                     </select>
+                                    {errors.subject && <span className="text-red-500 text-sm">Subject is required</span>}
                                 </div>
 
                                 <div className="form-control">
                                     <label className="label">
                                         <span className="label-text">Message</span>
                                     </label>
-                                    <textarea className="textarea textarea-bordered h-32 w-full resize-none" placeholder="How can we help you?"></textarea>
+                                    <textarea 
+                                        className="textarea textarea-bordered h-32 w-full resize-none" 
+                                        placeholder="How can we help you?"
+                                        {...register("message", { required: true })}
+                                    ></textarea>
+                                    {errors.message && <span className="text-red-500 text-sm">Message is required</span>}
                                 </div>
 
                                 <div className="form-control mt-6">
-                                    <button className="btn btn-primary">Send Message</button>
+                                    <button disabled={isSending} className="btn btn-primary">
+                                        {isSending ? 'Sending...' : 'Send Message'}
+                                    </button>
                                 </div>
                             </form>
                         </div>
