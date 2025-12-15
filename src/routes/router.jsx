@@ -23,6 +23,7 @@ import AdminAllLoans from "../pages/Dashboard/Admin/AllLoans";
 import LoanApplications from "../pages/Dashboard/Admin/LoanApplications";
 import DashboardWelcome from "../pages/Dashboard/Shared/DashboardWelcome";
 import AdminRoute from "./AdminRoute";
+import BorrowerRoute from "./BorrowerRoute";
 
 const router = createBrowserRouter([
   {
@@ -82,7 +83,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <DashboardWelcome />
+        element: <DashboardWelcome />,
       },
       {
         path: "add-loan",
@@ -128,7 +129,10 @@ const router = createBrowserRouter([
         path: "my-loans",
         element: (
           <PrivateRoute>
-            <MyLoans />
+            <BorrowerRoute>
+              {" "}
+              <MyLoans />
+            </BorrowerRoute>
           </PrivateRoute>
         ),
       },
