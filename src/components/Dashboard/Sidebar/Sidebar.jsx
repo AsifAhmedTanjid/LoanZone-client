@@ -5,6 +5,8 @@ import { HashLoader } from "react-spinners";
 import AdminMenu from "./Menu/AdminMenu";
 import ManagerMenu from "./Menu/ManagerMenu";
 import BorrowerMenu from "./Menu/BorrowerMenu";
+import MenuItem from "./Menu/MenuItem";
+import { FaChartPie } from "react-icons/fa";
 
 const Sidebar = ({ isActive }) => {
   const [role, isRoleLoading] = useRole();
@@ -52,6 +54,7 @@ const Sidebar = ({ isActive }) => {
             {/*  Menu Items */}
             <nav>
               {/* Common Menu */}
+              <MenuItem icon={FaChartPie} label='Overview' address='/dashboard' />
             
               {/* Role-Based Menu */}
               {role === 'borrower' && <BorrowerMenu></BorrowerMenu>}
