@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Container from '../../components/shared/Container/Container';
 import LoanCard from '../../components/shared/LoanCard/LoanCard';
+import LoanCardSkeleton from '../../components/shared/LoanCard/LoanCardSkeleton';
 import { useQuery } from '@tanstack/react-query';
-import { HashLoader } from 'react-spinners';
 import useAxios from '../../hooks/useAxios';
 
 const AllLoans = () => {
@@ -46,14 +46,6 @@ const AllLoans = () => {
         }
     }
 
-    if (isLoading) {
-        return (
-            <div className="flex justify-center items-center min-h-screen">
-                <HashLoader color="#36d7b7" size={50} />
-            </div>
-        );
-    }
-
     return (
         <Container>
             <div className="py-12">
@@ -65,9 +57,15 @@ const AllLoans = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {loans.map(loan => (
-                        <LoanCard key={loan._id} loan={loan} />
-                    ))}
+                    {isLoading ? (
+                        [...Array(8)].map((_, index) => (
+                            <LoanCardSkeleton key={index} />
+                        ))
+                    ) : (
+                        loans.map(loan => (
+                            <LoanCard key={loan._id} loan={loan} />
+                        ))
+                    )}
                 </div>
 
                 {/* Pagination Controls */}

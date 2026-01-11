@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 import LoanCard from '../shared/LoanCard/LoanCard';
+import LoanCardSkeleton from '../shared/LoanCard/LoanCardSkeleton';
 import { useQuery } from '@tanstack/react-query';
-import { HashLoader } from 'react-spinners';
 import useAxios from '../../hooks/useAxios';
 import { motion } from 'framer-motion';
 
@@ -32,14 +32,6 @@ const FeaturedLoans = () => {
         show: { opacity: 1, y: 0 }
     };
 
-    if (isLoading) {
-        return (
-            <div className="flex justify-center items-center py-12">
-                <HashLoader color="#36d7b7" size={50} />
-            </div>
-        );
-    }
-
     return (
         <div className="py-12 my-12">
             <div className="text-center mb-12">
@@ -63,19 +55,27 @@ const FeaturedLoans = () => {
                 </motion.p>
             </div>
 
-            <motion.div 
-                variants={container}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: false, margin: "-100px" }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-            >
-                {loans.map(loan => (
-                    <motion.div key={loan._id} variants={item}>
-                        <LoanCard loan={loan} />
-                    </motion.div>
-                ))}
-            </motion.div>
+            {isLoading ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {[...Array(8)].map((_, index) => (
+                        <LoanCardSkeleton key={index} />
+                    ))}
+                </div>
+            ) : (
+                <motion.div 
+                    variants={container}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: false, margin: "-100px" }}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+                >
+                    {loans.map(loan => (
+                        <motion.div key={loan._id} variants={item}>
+                            <LoanCard loan={loan} />
+                        </motion.div>
+                    ))}
+                </motion.div>
+            )}
 
             <div className="text-center mt-12">
                 <Link to="/all-loans" className="btn btn-outline btn-primary btn-wide hover:scale-105 transition-transform">
