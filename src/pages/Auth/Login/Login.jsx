@@ -24,7 +24,6 @@ const Login = () => {
   const handleDemoLogin = (email, password) => {
     setValue("email", email);
     setValue("password", password);
-    // onSubmit({ email, password }); // Optional: Auto submit
   };
 
   const onSubmit = (data) => {
