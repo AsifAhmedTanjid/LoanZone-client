@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 const LoanCard = ({ loan }) => {
-    const { _id, title, loanImage, category, interestRate, maxLoanLimit } = loan;
+    const { _id, title, loanImage, category, interestRate, maxLoanLimit, description } = loan;
 
     return (
         <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-base-200">
@@ -10,10 +10,14 @@ const LoanCard = ({ loan }) => {
                 <img src={loanImage} alt={title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
             </figure>
             <div className="card-body">
-                <div className="flex justify-between items-start">
-                    <h2 className="card-title text-lg font-bold">{title}</h2>
-                    <div className="badge badge-secondary badge-outline text-xs">{category}</div>
+                <div className="flex justify-between items-start h-14">
+                    <h2 className="card-title text-lg font-bold line-clamp-2">{title}</h2>
+                    <div className="badge badge-secondary badge-outline text-xs shrink-0">{category}</div>
                 </div>
+                
+                <p className="text-sm text-base-content/70 line-clamp-2 my-2">
+                    {description?.length > 100 ? `${description.substring(0, 100)}...` : description}
+                </p>
                 
                 <div className="space-y-2 my-4">
                     <div className="flex justify-between text-sm">
