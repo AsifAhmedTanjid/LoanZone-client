@@ -5,7 +5,6 @@ const BorrowerMenu = () => {
   return (
     <>
       <MenuItem icon={FaFileContract} label='My Loans' address='my-loans' />
-      <MenuItem icon={FaUserCircle} label='Profile' address='profile' />
     </>
   )
 }

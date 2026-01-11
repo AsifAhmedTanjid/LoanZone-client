@@ -6,7 +6,7 @@ import AdminMenu from "./Menu/AdminMenu";
 import ManagerMenu from "./Menu/ManagerMenu";
 import BorrowerMenu from "./Menu/BorrowerMenu";
 import MenuItem from "./Menu/MenuItem";
-import { FaChartPie } from "react-icons/fa";
+import { FaChartPie, FaUserCircle } from "react-icons/fa";
 
 const Sidebar = ({ isActive }) => {
   const [role, isRoleLoading] = useRole();
@@ -60,11 +60,8 @@ const Sidebar = ({ isActive }) => {
               {role === 'borrower' && <BorrowerMenu></BorrowerMenu>}
               {role === 'manager' && <ManagerMenu></ManagerMenu>}
               {role === 'admin' && <AdminMenu />}
-              {/* <ul>
-                <li>1</li>
-                <li>1</li>
-                <li>1</li>
-              </ul> */}
+              
+              <MenuItem icon={FaUserCircle} label='Profile' address='profile' />
             </nav>
           </div>
 

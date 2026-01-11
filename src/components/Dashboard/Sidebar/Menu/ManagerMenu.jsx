@@ -10,7 +10,6 @@ const ManagerMenu = () => {
       <MenuItem icon={BsBank} label='Manage Loans' address='manage-loans' />
       <MenuItem icon={MdPendingActions} label='Pending Applications' address='pending-loans' />
       <MenuItem icon={FaCheckCircle} label='Approved Applications' address='approved-loans' />
-      <MenuItem icon={FaUserCircle} label='Profile' address='profile' />
     </>
   )
 }
