@@ -11,9 +11,16 @@ const FeaturedLoans = () => {
     const { data: loans = [], isLoading } = useQuery({
         queryKey: ['featured-loans'],
         queryFn: async () => {
-            const { data } = await axiosPublic.get('/loans');
-            const featured = data.filter(loan => loan.showOnHome);
-            return featured.length > 0 ? featured : data.slice(0, 8);
+            
+            const { data: featuredData } = await axiosPublic.get('/loans?featured=true&size=8');
+            
+            if (featuredData.length > 0) {
+                return featuredData;
+            }
+            
+            
+            const { data: latestData } = await axiosPublic.get('/loans?size=8');
+            return latestData;
         }
     });
 

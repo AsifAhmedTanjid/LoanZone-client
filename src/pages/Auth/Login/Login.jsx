@@ -16,9 +16,16 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
   const axiosSecure = useAxiosSecure();
+
+  const handleDemoLogin = (email, password) => {
+    setValue("email", email);
+    setValue("password", password);
+    // onSubmit({ email, password }); // Optional: Auto submit
+  };
 
   const onSubmit = (data) => {
     const { email, password } = data;
@@ -146,6 +153,31 @@ const Login = () => {
 
               <div className="form-control mt-6">
                 <button className="btn btn-primary w-full">Login</button>
+              </div>
+
+              {/* Demo Login Buttons */}
+              <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleDemoLogin("admin@gmail.com", "@LoanZoneAsifAdmin")}
+                  className="btn btn-xs btn-outline btn-accent"
+                >
+                  Admin
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDemoLogin("manager@gmail.com", "@LoanZoneAsifManager")}
+                  className="btn btn-xs btn-outline btn-secondary"
+                >
+                  Manager
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDemoLogin("jhankar@gmail.com", "@LoanZoneAsif")}
+                  className="btn btn-xs btn-outline btn-info"
+                >
+                  User
+                </button>
               </div>
             </form>
 
