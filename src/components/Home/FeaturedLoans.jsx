@@ -13,7 +13,7 @@ const FeaturedLoans = () => {
         queryFn: async () => {
             const { data } = await axiosPublic.get('/loans');
             const featured = data.filter(loan => loan.showOnHome);
-            return featured.length > 0 ? featured : data.slice(0, 6);
+            return featured.length > 0 ? featured : data.slice(0, 8);
         }
     });
 
@@ -68,7 +68,7 @@ const FeaturedLoans = () => {
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: false, margin: "-100px" }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
                 {loans.map(loan => (
                     <motion.div key={loan._id} variants={item}>

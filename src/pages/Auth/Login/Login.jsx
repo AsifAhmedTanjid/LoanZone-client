@@ -52,7 +52,7 @@ const Login = () => {
 
         axiosSecure.post("/users", userInfo).then((res) => {
           if (res.data.insertedId) {
-            console.log("user created in the database");
+            // console.log("user created in the database");
           }
         });
 

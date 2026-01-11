@@ -8,7 +8,7 @@ import useAxios from '../../hooks/useAxios';
 const AllLoans = () => {
     const axiosPublic = useAxios();
     const [currentPage, setCurrentPage] = useState(0);
-    const itemsPerPage = 9;
+    const itemsPerPage = 8;
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -64,7 +64,7 @@ const AllLoans = () => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {loans.map(loan => (
                         <LoanCard key={loan._id} loan={loan} />
                     ))}
